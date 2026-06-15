@@ -27,7 +27,7 @@ async function getTeams() {
       '<p class="loading">Loading teams...</p>';
 
     const response = await fetch(
-      "http://localhost:3000/api/teams"
+      "https://cricket-team-explorer-4.onrender.com/api/teams"
     );
 
     const data = await response.json();
