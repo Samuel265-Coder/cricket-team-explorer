@@ -1,0 +1,47 @@
+require("dotenv").config();
+
+const express = require("express");
+const axios = require("axios");
+const cors = require("cors");
+
+const app = express();
+
+app.use(cors());
+
+app.get("/api/teams", async (req, res) => {
+
+  try {
+
+    const response = await axios.get(
+      "https://cricket.sportmonks.com/api/v2.0/teams",
+      {
+        params: {
+          api_token: process.env.SPORTMONKS_TOKEN,
+          include: "country"
+        }
+      }
+    );
+
+    res.json(response.data);
+
+  } catch (error) {
+
+    console.error(error.message);
+
+    res.status(500).json({
+      error: "Failed to fetch teams"
+    });
+
+  }
+
+});
+
+app.get("/", (req, res) => {
+  res.send("Backend is working!");
+});
+
+app.listen(process.env.PORT, () => {
+  console.log(
+    `Server running on port ${process.env.PORT}`
+  );
+});
