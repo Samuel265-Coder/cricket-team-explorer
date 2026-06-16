@@ -27,12 +27,12 @@ async function getTeams() {
       '<p class="loading">Loading teams...</p>';
 
     const response = await fetch(
-      "https://cricket-team-explorer-4.onrender.com/api/teams"
+      "https://cricket-team-explorer-4.onrender.com/api/teams" ||"http://localhost:3000/api/teams"
     );
 
     const data = await response.json();
 
-    console.log(data);
+    // console.log(data);
 
     allTeams = data.data;
 
@@ -40,7 +40,7 @@ async function getTeams() {
 
   } catch (error) {
 
-    console.error(error);
+    // console.error(error);
 
     results.innerHTML = `
       <p class="empty">
@@ -96,6 +96,10 @@ function displayTeams(teams) {
   teams.forEach(team => {
 
     html += `
+       <a
+         href="team.html?id=${team.id}"
+         class="team-link"
+       >
       <div class="team-card">
 
         <img
@@ -121,6 +125,7 @@ function displayTeams(teams) {
         </p>
 
       </div>
+      </a>
     `;
   });
 
