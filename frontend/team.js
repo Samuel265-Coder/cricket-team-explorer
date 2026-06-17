@@ -49,7 +49,7 @@ async function getTeam() {
 
     const data = await response.json();
 
-    console.log(data);
+    // console.log(data);
 
     displayTeam(data.data);
   } catch (error) {

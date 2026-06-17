@@ -33,13 +33,13 @@ async function getTeams() {
 
     const data = await response.json();
 
-    console.log(data);
+    // console.log(data);
 
     allTeams = data.data;
 
     displayTeams(allTeams);
   } catch (error) {
-    console.error(error);
+    // console.error(error);
 
     results.innerHTML = `
       <p class="empty">
