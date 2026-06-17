@@ -9,73 +9,82 @@ const app = express();
 app.use(cors());
 
 const cricketInstance = axios.create({
-  baseURL:"https://cricket.sportmonks.com/api/v2.0/teams",
+  baseURL: "https://cricket.sportmonks.com/api/v2.0",
 });
+
+/*
+|--------------------------------------------------------------------------
+| Get all teams
+|--------------------------------------------------------------------------
+*/
 
 app.get("/api/teams", async (req, res) => {
-
   try {
-
-    const response = await cricketInstance.get(
-      {
-        params: {
-          api_token: process.env.SPORTMONKS_TOKEN,
-          include: "country"
-        }
-      }
-    );
-
-    res.json(response.data);
-
-  } catch (error) {
-
-    // console.error(error.message);
-
-    res.status(500).json({
-      error: "Failed to fetch teams"
+    const response = await cricketInstance.get("/teams", {
+      params: {
+        api_token: process.env.SPORTMONKS_TOKEN,
+        include: "country",
+      },
     });
 
-  }
-
-});
-
-
-app.get("/api/teams/:id", async (req, res) => {
-
-  try {
-
-    const teamId = req.params.id;
-
-    const response = await cricketInstance.get(
-      `/${teamId}`,
-      {
-        params: {
-          api_token: process.env.SPORTMONKS_TOKEN,
-          include: "country"
-        }
-      }
-    );
-
     res.json(response.data);
-
   } catch (error) {
-
     console.error(error.message);
 
     res.status(500).json({
-      error: "Failed to fetch team"
+      error: "Failed to fetch teams",
     });
-
   }
-
 });
+
+/*
+|--------------------------------------------------------------------------
+| Get single team
+|--------------------------------------------------------------------------
+*/
+
+app.get("/api/teams/:id", async (req, res) => {
+  try {
+    const teamId = req.params.id;
+
+    const response = await cricketInstance.get(
+      `/teams/${teamId}`,
+      {
+        params: {
+          api_token: process.env.SPORTMONKS_TOKEN,
+          include: "country",
+        },
+      }
+    );
+
+    res.json(response.data);
+  } catch (error) {
+    console.error(error.message);
+
+    res.status(500).json({
+      error: "Failed to fetch team",
+    });
+  }
+});
+
+/*
+|--------------------------------------------------------------------------
+| Root route
+|--------------------------------------------------------------------------
+*/
 
 app.get("/", (req, res) => {
   res.send("Backend is working!");
 });
 
-app.listen(process.env.PORT, () => {
-  console.log(
-    `Server running on port ${process.env.PORT}`
-  );
+/*
+|--------------------------------------------------------------------------
+| Start server
+|--------------------------------------------------------------------------
+*/
+
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });

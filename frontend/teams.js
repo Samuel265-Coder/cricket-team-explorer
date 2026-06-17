@@ -3,6 +3,9 @@ const searchInput = document.getElementById("searchInput");
 
 let allTeams = [];
 
+const API_URL =
+  "https://cricket-team-explorer-4.onrender.com";
+
 /*
 |--------------------------------------------------------------------------
 | Load teams automatically
@@ -15,32 +18,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /*
 |--------------------------------------------------------------------------
-| Fetch teams from backend
+| Fetch teams
 |--------------------------------------------------------------------------
 */
 
 async function getTeams() {
-
   try {
-
     results.innerHTML =
       '<p class="loading">Loading teams...</p>';
 
     const response = await fetch(
-      "https://cricket-team-explorer-4.onrender.com/api/teams" ||"http://localhost:3000/api/teams"
+      `${API_URL}/api/teams`
     );
 
     const data = await response.json();
 
-    // console.log(data);
+    console.log(data);
 
     allTeams = data.data;
 
     displayTeams(allTeams);
-
   } catch (error) {
-
-    // console.error(error);
+    console.error(error);
 
     results.innerHTML = `
       <p class="empty">
@@ -57,7 +56,6 @@ async function getTeams() {
 */
 
 searchInput.addEventListener("input", () => {
-
   const searchTerm =
     searchInput.value.toLowerCase();
 
@@ -69,7 +67,6 @@ searchInput.addEventListener("input", () => {
     );
 
   displayTeams(filteredTeams);
-
 });
 
 /*
@@ -79,52 +76,52 @@ searchInput.addEventListener("input", () => {
 */
 
 function displayTeams(teams) {
-
   if (!teams.length) {
-
     results.innerHTML = `
       <p class="empty">
         No teams found.
       </p>
     `;
-
     return;
   }
 
   let html = "";
 
   teams.forEach(team => {
-
     html += `
-       <a
-         href="team.html?id=${team.id}"
-         class="team-link"
-       >
-      <div class="team-card">
+      <a
+        href="team.html?id=${team.id}"
+        class="team-link"
+      >
+        <div class="team-card">
 
-        <img
-          src="${team.image_path}"
-          alt="${team.name}"
-        >
+          <img
+            src="${team.image_path}"
+            alt="${team.name}"
+          >
 
-        <h2>${team.name}</h2>
+          <h2>${team.name}</h2>
 
-        <p>
-          <strong>Code:</strong>
-          ${team.code || "N/A"}
-        </p>
+          <p>
+            <strong>Code:</strong>
+            ${team.code || "N/A"}
+          </p>
 
-        <p>
-          <strong>Country:</strong>
-          ${team.country?.name || "Unknown"}
-        </p>
+          <p>
+            <strong>Country:</strong>
+            ${team.country?.name || "Unknown"}
+          </p>
 
-        <p>
-          <strong>National Team:</strong>
-          ${team.national_team ? "Yes" : "No"}
-        </p>
+          <p>
+            <strong>National Team:</strong>
+            ${
+              team.national_team
+                ? "Yes"
+                : "No"
+            }
+          </p>
 
-      </div>
+        </div>
       </a>
     `;
   });
