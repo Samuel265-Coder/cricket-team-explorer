@@ -67,6 +67,110 @@ app.get("/api/teams/:id", async (req, res) => {
   }
 });
 
+
+
+/*
+|--------------------------------------------------------------------------
+| Get team squad (players)
+|--------------------------------------------------------------------------
+*/
+
+app.get("/api/teams/:id/squad/:seasonId", async (req, res) => {
+  try {
+
+    const { id, seasonId } = req.params;
+
+    const response = await cricketInstance.get(
+      `/teams/${id}/squad/${seasonId}`,
+      {
+        params: {
+          api_token: process.env.SPORTMONKS_TOKEN
+        }
+      }
+    );
+
+    res.json(response.data);
+
+  } catch (error) {
+
+    console.error(
+      error.response?.data || error.message
+    );
+
+    res.status(500).json({
+      error: "Failed to fetch squad"
+    });
+
+  }
+});/*
+|--------------------------------------------------------------------------
+| Get team squad (players)
+|--------------------------------------------------------------------------
+*/
+
+app.get("/api/teams/:id/squad/:seasonId", async (req, res) => {
+  try {
+
+    const { id, seasonId } = req.params;
+
+    const response = await cricketInstance.get(
+      `/teams/${id}/squad/${seasonId}`,
+      {
+        params: {
+          api_token: process.env.SPORTMONKS_TOKEN
+        }
+      }
+    );
+
+    res.json(response.data);
+
+  } catch (error) {
+
+    console.error(
+      error.response?.data || error.message
+    );
+
+    res.status(500).json({
+      error: "Failed to fetch squad"
+    });
+
+  }
+});/*
+|--------------------------------------------------------------------------
+| Get team squad (players)
+|--------------------------------------------------------------------------
+*/
+
+app.get("/api/teams/:id/squad/:seasonId", async (req, res) => {
+  try {
+
+    const { id } = req.params;
+
+    let seasonId = req.params.seasonId || 10;
+
+    const response = await cricketInstance.get(
+      `/teams/${id}/squad/${seasonId}`,
+      {
+        params: {
+          api_token: process.env.SPORTMONKS_TOKEN
+        }
+      }
+    );
+
+    res.json(response.data);
+
+  } catch (error) {
+
+    console.error(
+      error.response?.data || error.message
+    );
+
+    res.status(500).json({
+      error: "Failed to fetch squad"
+    });
+
+  }
+});
 /*
 |--------------------------------------------------------------------------
 | Root route
@@ -84,7 +188,6 @@ app.get("/", (req, res) => {
 */
 
 const PORT = process.env.PORT || 3000;
-
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

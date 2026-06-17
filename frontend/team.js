@@ -13,8 +13,7 @@ const teamCountry =
 const nationalTeam =
   document.getElementById("nationalTeam");
 
-const teamIdElement =
-  document.getElementById("teamId");
+
 
 const updatedAt =
   document.getElementById("updatedAt");
@@ -34,6 +33,7 @@ const params =
   );
 
 const teamId = params.get("id");
+const seasonId = 10;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,7 +49,7 @@ async function getTeam() {
 
     const data = await response.json();
 
-    // console.log(data);
+    console.log(data.data);
 
     displayTeam(data.data);
   } catch (error) {
@@ -58,6 +58,7 @@ async function getTeam() {
 }
 
 getTeam();
+
 
 /*
 |--------------------------------------------------------------------------
@@ -87,9 +88,6 @@ function displayTeam(team) {
         : "No"
     }`;
 
-  teamIdElement.textContent =
-    `Team ID: ${team.id}`;
-
   updatedAt.textContent =
     new Date(team.updated_at)
       .toLocaleDateString(
@@ -100,4 +98,61 @@ function displayTeam(team) {
           day: "numeric",
         }
       );
+}
+
+
+
+
+/*
+|--------------------------------------------------------------------------
+| feature team squad
+|--------------------------------------------------------------------------
+*/
+
+
+async function getPlayers() {
+
+  const response = await fetch(
+    `${API_URL}/api/teams/${teamId}/squad/${seasonId}`
+  );
+
+  const data = await response.json();
+
+  console.log(data.data.squad);
+
+  displayPlayers(data.data.squad);
+}
+
+getPlayers();
+
+
+
+/*
+|--------------------------------------------------------------------------
+| display team squad
+|--------------------------------------------------------------------------
+*/
+
+function displayPlayers(players) {
+
+  const container = document.getElementById("playersContainer");
+
+  container.innerHTML = "";
+
+  players.forEach(player => {
+
+    container.innerHTML += `
+      <div class="player-card">
+
+        <img src="${player.image_path}" alt="${player.fullname}">
+
+        <h3>${player.fullname}</h3>
+
+        <p>${player.position?.name || "Player"}</p>
+
+      </div>
+    `;
+
+  });
+
 }
