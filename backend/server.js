@@ -8,12 +8,15 @@ const app = express();
 
 app.use(cors());
 
+const cricketInstance = axios.create({
+  baseURL:"https://cricket.sportmonks.com/api/v2.0/teams",
+});
+
 app.get("/api/teams", async (req, res) => {
 
   try {
 
-    const response = await axios.get(
-      "https://cricket.sportmonks.com/api/v2.0/teams",
+    const response = await cricketInstance.get(
       {
         params: {
           api_token: process.env.SPORTMONKS_TOKEN,
@@ -43,8 +46,8 @@ app.get("/api/teams/:id", async (req, res) => {
 
     const teamId = req.params.id;
 
-    const response = await axios.get(
-      `https://cricket.sportmonks.com/api/v2.0/teams/${teamId}`,
+    const response = await cricketInstance.get(
+      `/${teamId}`,
       {
         params: {
           api_token: process.env.SPORTMONKS_TOKEN,
